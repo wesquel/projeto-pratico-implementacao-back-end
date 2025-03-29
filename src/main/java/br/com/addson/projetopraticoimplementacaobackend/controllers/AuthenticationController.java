@@ -45,6 +45,8 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseException(e.getMessage()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseException(e.getMessage()));
         }
     }
 

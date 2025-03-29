@@ -2,6 +2,7 @@ package br.com.addson.projetopraticoimplementacaobackend.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -15,7 +16,8 @@ public class Pessoa {
     private Integer id;
     @Column(name = "pes_nome", length = 200, nullable = false)
     private String nome;
-    private Date dataNascimento;
+    @Column(name = "pes_data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
     @Column(name = "pes_sexo", length = 9, nullable = false)
     private String sexo;
     @Column(name = "pes_mae", length = 200, nullable = false)
@@ -43,6 +45,10 @@ public class Pessoa {
     @OneToMany(mappedBy = "pessoa")
     private Set<Lotacao> lotacoes;
 
+    @OneToOne
+    @JoinColumn(name = "usu_id", unique = true)
+    private User usuario;
+
     public Pessoa() {
     }
 
@@ -62,11 +68,11 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -92,5 +98,13 @@ public class Pessoa {
 
     public void setNomePai(String nomePai) {
         this.nomePai = nomePai;
+    }
+
+    public User getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
     }
 }
