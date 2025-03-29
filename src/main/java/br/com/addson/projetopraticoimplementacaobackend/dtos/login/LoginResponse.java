@@ -1,4 +1,18 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.login;
 
-public record LoginResponse(String token, String refreshToken, Long expiresIn) {
+import br.com.addson.projetopraticoimplementacaobackend.models.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public record LoginResponse(String username, String token, String refreshToken,
+                            long expiresIn, String message) {
+    public static LoginResponse fromUserAndTokens(User user, String jwtToken,
+                                                  String refreshToken, long expirationTime) {
+        return new LoginResponse(user.getUsername(), jwtToken,
+                refreshToken, expirationTime, "Login realizado com sucesso.");
+    }
+    public static LoginResponse fromUserAndTokens(UserDetails user, String jwtToken,
+                                                  String refreshToken, long expirationTime) {
+        return new LoginResponse(user.getUsername(), jwtToken,
+                refreshToken, expirationTime, "Token atualizado com sucesso.");
+    }
 }

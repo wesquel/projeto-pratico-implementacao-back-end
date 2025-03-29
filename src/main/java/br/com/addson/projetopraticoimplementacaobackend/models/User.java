@@ -20,7 +20,7 @@ public class User implements UserDetails {
     @Column(name = "usu_username", length = 100, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "usu_password", nullable = false)
+    @Column(name = "usu_password", length = 128, nullable = false)
     private String password;
 
     public User() {
@@ -29,6 +29,18 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -40,11 +52,4 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }
