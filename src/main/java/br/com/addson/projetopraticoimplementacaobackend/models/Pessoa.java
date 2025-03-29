@@ -45,10 +45,6 @@ public class Pessoa {
     @OneToMany(mappedBy = "pessoa")
     private Set<Lotacao> lotacoes;
 
-    @OneToOne
-    @JoinColumn(name = "usu_id", unique = true)
-    private User usuario;
-
     public Pessoa() {
     }
 
@@ -98,13 +94,5 @@ public class Pessoa {
 
     public void setNomePai(String nomePai) {
         this.nomePai = nomePai;
-    }
-
-    public User getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(User usuario) {
-        this.usuario = usuario;
     }
 }

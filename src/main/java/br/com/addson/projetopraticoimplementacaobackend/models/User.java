@@ -23,9 +23,6 @@ public class User implements UserDetails {
     @Column(name = "usu_password", length = 128, nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Pessoa pessoa;
-
     public User() {
     }
 
@@ -53,13 +50,5 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
     }
 }
