@@ -1,10 +1,10 @@
 package br.com.addson.projetopraticoimplementacaobackend.services;
 
-import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
 import br.com.addson.projetopraticoimplementacaobackend.enums.SexoEnum;
+import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.EnderecoRepository;
@@ -23,10 +23,12 @@ public class PessoaService {
 
     private final PessoaRepository pessoaRepository;
     private final EnderecoRepository enderecoRepository;
+    private final EnderecoService enderecoService;
 
-    public PessoaService(PessoaRepository pessoaRepository, EnderecoRepository enderecoRepository) {
+    public PessoaService(PessoaRepository pessoaRepository, EnderecoRepository enderecoRepository, EnderecoService enderecoService) {
         this.pessoaRepository = pessoaRepository;
         this.enderecoRepository = enderecoRepository;
+        this.enderecoService = enderecoService;
     }
 
     public List<PessoaResponse> findAll(Pageable pageable) {
@@ -70,6 +72,21 @@ public class PessoaService {
         pessoa.setNomeMae(pessoaUpdateRequest.nomeMae());
         pessoa.setNomePai(pessoaUpdateRequest.nomePai());
 
+        Set<Endereco> enderecosAtualizados = pessoaUpdateRequest.enderecos().stream()
+                .map(enderecoUpdateRequest -> {
+                    if (enderecoUpdateRequest.id() != null) {
+                        return enderecoService.update(enderecoUpdateRequest);
+                    } else {
+                        Endereco endereco = enderecoService.register(enderecoUpdateRequest);
+                        endereco.getPessoas().add(pessoa);
+                        return enderecoRepository.save(endereco);
+                    }
+                })
+                .collect(Collectors.toSet());
+
+        pessoa.getEnderecos().removeIf(endereco -> !enderecosAtualizados.contains(endereco));
+        pessoa.getEnderecos().addAll(enderecosAtualizados);
+
         Pessoa pessoaSaved = pessoaRepository.save(pessoa);
         return PessoaResponse.fromEntity(pessoaSaved);
     }
@@ -85,4 +102,7 @@ public class PessoaService {
                 .orElseThrow(() -> new UsernameNotFoundException("Pessoa não existe!"));
         return PessoaResponse.fromEntity(pessoa);
     }
+
+
+
 }

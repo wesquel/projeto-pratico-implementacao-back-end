@@ -1,7 +1,6 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoUpdateRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +23,8 @@ public record PessoaUpdateRequest(
 
         String nomeMae,
         String nomePai,
+
         @Valid
-        Set<EnderecoUpdateRequest> enderecos
+        Set<EnderecoRequest> enderecos
 ) {
 }

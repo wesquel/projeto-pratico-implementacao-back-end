@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CidadeRequest(
+        Integer id,
         @NotNull(message = "O nome da cidade é obrigatório.")
         @Size(min = 3, max = 200, message = "O tipo de nome deve ter entre 3 e 200 caracteres.")
         String nome,
