@@ -14,6 +14,9 @@ public record CidadeRequest(
         String uf
 ) {
     public Cidade toEntity() {
-        return new Cidade(this.nome, this.uf);
+        return new Cidade(
+                this.nome.toUpperCase(),
+                this.uf.toUpperCase()
+        );
     }
 }

@@ -4,15 +4,12 @@ import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeReques
 import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.CidadeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +36,13 @@ public class CidadeService {
     }
 
     public Cidade register(CidadeRequest cidadeRequest) {
-        Cidade cidade = cidadeRequest.toEntity();
-        cidade.setEnderecos(new ArrayList<>());
-        return cidadeRepository.save(cidade);
+        return cidadeRepository.findByNomeAndUf(
+                cidadeRequest.nome().toUpperCase(), cidadeRequest.uf().toUpperCase()
+        ).orElseGet(() -> {
+            Cidade novaCidade = cidadeRequest.toEntity();
+            novaCidade.setEnderecos(new ArrayList<>());
+            return cidadeRepository.save(novaCidade);
+        });
     }
 
     public Cidade update(CidadeRequest cidadeRequest) {
