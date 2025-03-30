@@ -38,4 +38,67 @@ public class Endereco {
     public Endereco() {
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTipoLogradouro() {
+        return tipoLogradouro;
+    }
+
+    public void setTipoLogradouro(String tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    public Set<Pessoa> getPessoas() {
+        return pessoas;
+    }
+
+    public void setPessoas(Set<Pessoa> pessoas) {
+        this.pessoas = pessoas;
+    }
+
+    public Set<Unidade> getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(Set<Unidade> unidades) {
+        this.unidades = unidades;
+    }
 }

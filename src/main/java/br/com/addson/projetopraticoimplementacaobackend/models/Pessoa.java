@@ -95,4 +95,12 @@ public class Pessoa {
     public void setNomePai(String nomePai) {
         this.nomePai = nomePai;
     }
+
+    public Set<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(Set<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
 }

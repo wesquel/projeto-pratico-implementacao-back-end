@@ -4,14 +4,9 @@ import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseE
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.signup.SignupRequest;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.signup.SignupResponse;
 import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
-import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.services.PessoaService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequestMapping("/pessoa")
 @RestController
@@ -69,9 +63,8 @@ public class PessoaController {
     public ResponseEntity<?> delete(@PathVariable Integer id){
         try {
             pessoaService.delete(id);
-        }catch (UsernameNotFoundException e){
+        }catch (UsernameNotFoundException ignored){
         }
-
         return ResponseEntity.noContent().build();
     }
 
