@@ -8,6 +8,7 @@ import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.CidadeRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.EnderecoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,12 +43,21 @@ public class EnderecoService {
 
     public EnderecoResponse getById(Integer id) {
         Endereco endereco = enderecoRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("Endereço não existe!"));
+                .orElseThrow(() -> new EntityNotFoundException("Endereço não existe!"));
         return EnderecoResponse.fromEntity(endereco);
     }
 
     public Endereco register(EnderecoRequest enderecoRequest) {
         Endereco endereco = enderecoRequest.toEntity();
+
+        Cidade cidade = (enderecoRequest.cidade().id() == null)
+                ? cidadeService.register(enderecoRequest.cidade())
+                : cidadeService.update(enderecoRequest.cidade());
+
+        if (enderecoRequest.cidade().id() == null) {
+            cidade.getEnderecos().add(endereco);
+        }
+        endereco.setCidade(cidade);
         endereco.setPessoas(new HashSet<>());
         return enderecoRepository.save(endereco);
     }

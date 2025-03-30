@@ -25,7 +25,7 @@ public class Pessoa {
     @Column(name = "pes_pai", length = 200)
     private String nomePai;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
         name = "pessoa_endereco",
         joinColumns = @JoinColumn(name = "pes_id"),

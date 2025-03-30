@@ -33,6 +33,13 @@ public class Unidade {
     public Unidade() {
     }
 
+    public Unidade(String nome, String sigla, Set<Endereco> enderecos) {
+        this.id = id;
+        this.nome = nome;
+        this.sigla = sigla;
+        this.enderecos = enderecos;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -55,5 +62,21 @@ public class Unidade {
 
     public void setSigla(String sigla) {
         this.sigla = sigla;
+    }
+
+    public Set<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(Set<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public Set<Lotacao> getLotacoes() {
+        return lotacoes;
+    }
+
+    public void setLotacoes(Set<Lotacao> lotacoes) {
+        this.lotacoes = lotacoes;
     }
 }

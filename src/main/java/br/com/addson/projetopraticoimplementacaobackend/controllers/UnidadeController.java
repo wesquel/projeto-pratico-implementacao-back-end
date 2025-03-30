@@ -3,55 +3,56 @@ package br.com.addson.projetopraticoimplementacaobackend.controllers;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeRequest;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
-import br.com.addson.projetopraticoimplementacaobackend.services.PessoaService;
+import br.com.addson.projetopraticoimplementacaobackend.services.UnidadeService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/pessoa")
+@RequestMapping("/unidade")
 @RestController
-public class PessoaController {
+public class UnidadeController {
 
-    private final PessoaService pessoaService;
+    private final UnidadeService unidadeService;
 
-    public PessoaController(PessoaService pessoaService) {
-        this.pessoaService = pessoaService;
+    public UnidadeController(UnidadeService unidadeService) {
+        this.unidadeService = unidadeService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id){
-        try{
-            PessoaResponse pessoaResponse = pessoaService.getById(id);
-            return ResponseEntity.status(HttpStatus.FOUND).body(pessoaResponse);
-        }catch (UsernameNotFoundException e){
+    public ResponseEntity<?> getById(@PathVariable Integer id) {
+        try {
+            UnidadeResponse unidadeResponse = unidadeService.getById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(unidadeResponse);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
         }
     }
 
     @GetMapping("/lista")
-    public ResponseEntity<List<PessoaResponse>> getAll(
+    public ResponseEntity<List<UnidadeResponse>> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<PessoaResponse> pessoas = pessoaService.findAll(pageable);
-        return ResponseEntity.ok(pessoas);
+        List<UnidadeResponse> unidades = unidadeService.findAll(pageable);
+        return ResponseEntity.ok(unidades);
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<?> register(@Valid @RequestBody PessoaRequest pessoaRequest) {
+    public ResponseEntity<?> register(@Valid @RequestBody UnidadeRequest unidadeRequest) {
         try {
-            PessoaResponse response = pessoaService.register(pessoaRequest);
+            UnidadeResponse response = unidadeService.register(unidadeRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (UserAlreadyExistsException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseException(e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseException(e.getMessage()));
@@ -59,9 +60,9 @@ public class PessoaController {
     }
 
     @PutMapping("/atualizar")
-    public ResponseEntity<?> register(@Valid @RequestBody PessoaUpdateRequest pessoaUpdateRequest) {
+    public ResponseEntity<?> update(@Valid @RequestBody UnidadeRequest unidadeRequest) {
         try {
-            PessoaResponse response = pessoaService.update(pessoaUpdateRequest);
+            UnidadeResponse response = unidadeService.update(unidadeRequest);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
@@ -71,12 +72,12 @@ public class PessoaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id){
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
-            pessoaService.delete(id);
-        }catch (UsernameNotFoundException ignored){
+            unidadeService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
         }
-        return ResponseEntity.noContent().build();
     }
-
 }

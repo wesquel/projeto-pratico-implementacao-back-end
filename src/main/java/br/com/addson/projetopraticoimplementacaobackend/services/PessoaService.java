@@ -1,5 +1,6 @@
 package br.com.addson.projetopraticoimplementacaobackend.services;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
@@ -9,11 +10,13 @@ import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.EnderecoRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,11 +52,18 @@ public class PessoaService {
         Pessoa pessoa = pessoaRequest.toEntity();
         pessoa.setSexo(sexoEnum.getValor());
 
+        Set<Endereco> enderecosSalvos = new HashSet<>();
+        for (EnderecoRequest enderecoRequest : pessoaRequest.enderecos()) {
+            Endereco enderecoSalvo = enderecoService.register(enderecoRequest);
+            enderecosSalvos.add(enderecoSalvo);
+        }
+        pessoa.setEnderecos(enderecosSalvos);
+
         Pessoa pessoaSaved = pessoaRepository.save(pessoa);
         return PessoaResponse.fromEntity(pessoaSaved);
     }
 
-    public  PessoaResponse update(PessoaUpdateRequest pessoaUpdateRequest){
+    public PessoaResponse update(PessoaUpdateRequest pessoaUpdateRequest){
 
         if ((pessoaUpdateRequest.nomeMae() == null || pessoaUpdateRequest.nomeMae().isBlank()) &&
                 (pessoaUpdateRequest.nomePai() == null || pessoaUpdateRequest.nomePai().isBlank())) {
@@ -64,7 +74,7 @@ public class PessoaService {
         SexoEnum sexoEnum = SexoEnum.fromInput(pessoaUpdateRequest.sexo());
 
         Pessoa pessoa = pessoaRepository.findById(pessoaUpdateRequest.id())
-                .orElseThrow(() -> new UsernameNotFoundException("Pessoa não existe!"));
+                .orElseThrow(() -> new EntityNotFoundException("Pessoa não existe!"));
 
         pessoa.setNome(pessoaUpdateRequest.nome());
         pessoa.setSexo(sexoEnum.getValor());
