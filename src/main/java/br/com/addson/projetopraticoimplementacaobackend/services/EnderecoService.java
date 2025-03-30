@@ -1,9 +1,12 @@
 package br.com.addson.projetopraticoimplementacaobackend.services;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
+import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
+import br.com.addson.projetopraticoimplementacaobackend.repositories.CidadeRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,8 +24,13 @@ public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
 
-    public EnderecoService(EnderecoRepository enderecoRepository) {
+    private final CidadeService cidadeService;
+    private final CidadeRepository cidadeRepository;
+
+    public EnderecoService(EnderecoRepository enderecoRepository, CidadeRepository cidadeRepository, CidadeService cidadeService, CidadeRepository cidadeRepository1) {
         this.enderecoRepository = enderecoRepository;
+        this.cidadeService = cidadeService;
+        this.cidadeRepository = cidadeRepository1;
     }
 
     public List<EnderecoResponse> findAll(Pageable pageable) {
@@ -52,7 +60,16 @@ public class EnderecoService {
         endereco.setLogradouro(enderecoRequest.logradouro());
         endereco.setNumero(enderecoRequest.numero());
         endereco.setBairro(enderecoRequest.bairro());
-        endereco.setCidade(enderecoRequest.cidade().toEntity());
+
+        Cidade cidade = (enderecoRequest.cidade().id() == null)
+                ? cidadeService.register(enderecoRequest.cidade())
+                : cidadeService.update(enderecoRequest.cidade());
+
+        if (enderecoRequest.cidade().id() == null) {
+            cidade.getEnderecos().add(endereco);
+        }
+
+        endereco.setCidade(cidade);
         return enderecoRepository.save(endereco);
     }
 
