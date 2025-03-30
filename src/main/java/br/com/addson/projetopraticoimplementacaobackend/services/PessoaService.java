@@ -3,9 +3,7 @@ package br.com.addson.projetopraticoimplementacaobackend.services;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
 import br.com.addson.projetopraticoimplementacaobackend.enums.SexoEnum;
-import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.EnderecoRepository;
@@ -63,7 +61,11 @@ public class PessoaService {
         return PessoaResponse.fromEntity(pessoaSaved);
     }
 
-    public PessoaResponse update(PessoaUpdateRequest pessoaUpdateRequest){
+    public PessoaResponse update(PessoaRequest pessoaUpdateRequest){
+
+        if (pessoaUpdateRequest.id() == null) {
+            throw new IllegalArgumentException("O ID de Pessoa não pode ser nulo.");
+        }
 
         if ((pessoaUpdateRequest.nomeMae() == null || pessoaUpdateRequest.nomeMae().isBlank()) &&
                 (pessoaUpdateRequest.nomePai() == null || pessoaUpdateRequest.nomePai().isBlank())) {

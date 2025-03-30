@@ -49,6 +49,11 @@ public class CidadeService {
     }
 
     public Cidade update(CidadeRequest cidadeRequest) {
+
+        if (cidadeRequest.id() == null) {
+            throw new IllegalArgumentException("O ID de cidade não pode ser nulo.");
+        }
+
         Cidade cidade = cidadeRepository.findById(cidadeRequest.id())
                 .orElseThrow(() -> new IllegalArgumentException("ID de cidade inválido!"));
         cidade.setNome(cidadeRequest.nome());

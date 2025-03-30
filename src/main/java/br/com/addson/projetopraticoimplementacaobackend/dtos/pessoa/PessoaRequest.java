@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public record PessoaRequest(
+        Integer id,
         @NotBlank(message = "O nome é obrigatório.")
         String nome,
 

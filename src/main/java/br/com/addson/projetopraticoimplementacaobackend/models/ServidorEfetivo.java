@@ -28,6 +28,11 @@ public class ServidorEfetivo {
     public ServidorEfetivo() {
     }
 
+    public ServidorEfetivo(String matricula, Pessoa pessoa) {
+        this.matricula = matricula;
+        this.pessoa = pessoa;
+    }
+
     public Integer getId() {
         return id;
     }

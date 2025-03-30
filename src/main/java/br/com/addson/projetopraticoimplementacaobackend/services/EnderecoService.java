@@ -63,6 +63,11 @@ public class EnderecoService {
     }
 
     public Endereco update(EnderecoRequest enderecoRequest) {
+
+        if (enderecoRequest.id() == null) {
+            throw new IllegalArgumentException("O ID de Endereco não pode ser nulo.");
+        }
+
         Endereco endereco = enderecoRepository.findById(enderecoRequest.id())
                 .orElseThrow(() -> new IllegalArgumentException("ID de endereço inválido!" + enderecoRequest.id()));
 

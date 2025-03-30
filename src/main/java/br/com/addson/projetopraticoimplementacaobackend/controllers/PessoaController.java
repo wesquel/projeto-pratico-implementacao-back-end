@@ -3,7 +3,6 @@ package br.com.addson.projetopraticoimplementacaobackend.controllers;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
 import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
 import br.com.addson.projetopraticoimplementacaobackend.services.PessoaService;
 import jakarta.persistence.EntityNotFoundException;
@@ -59,9 +58,9 @@ public class PessoaController {
     }
 
     @PutMapping("/atualizar")
-    public ResponseEntity<?> register(@Valid @RequestBody PessoaUpdateRequest pessoaUpdateRequest) {
+    public ResponseEntity<?> update(@Valid @RequestBody PessoaRequest pessoaRequest) {
         try {
-            PessoaResponse response = pessoaService.update(pessoaUpdateRequest);
+            PessoaResponse response = pessoaService.update(pessoaRequest);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));

@@ -1,15 +1,11 @@
 package br.com.addson.projetopraticoimplementacaobackend.controllers;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeResponse;
-import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
 import br.com.addson.projetopraticoimplementacaobackend.services.UnidadeService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -75,9 +71,8 @@ public class UnidadeController {
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
             unidadeService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
+        } catch (EntityNotFoundException ignored) {
         }
+        return ResponseEntity.noContent().build();
     }
 }
