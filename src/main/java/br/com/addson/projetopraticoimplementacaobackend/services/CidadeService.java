@@ -4,10 +4,13 @@ import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeReques
 import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.CidadeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ public class CidadeService {
 
     public CidadeResponse getById(Integer id) {
         Cidade cidade = cidadeRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("Cidade não existe!"));
+                .orElseThrow(() -> new EntityNotFoundException("Cidade não existe!"));
         return CidadeResponse.fromEntity(cidade);
     }
 
