@@ -1,9 +1,12 @@
 package br.com.addson.projetopraticoimplementacaobackend.services;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaUpdateRequest;
 import br.com.addson.projetopraticoimplementacaobackend.enums.SexoEnum;
+import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
+import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepository;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,12 +42,9 @@ public class PessoaService {
         }
         SexoEnum sexoEnum = SexoEnum.fromInput(pessoaRequest.sexo());
 
-        Pessoa pessoa = new Pessoa();
-        pessoa.setNome(pessoaRequest.nome());
-        pessoa.setDataNascimento(pessoaRequest.dataNascimento());
+        Pessoa pessoa = pessoaRequest.toEntity();
         pessoa.setSexo(sexoEnum.getValor());
-        pessoa.setNomeMae(pessoaRequest.nomeMae());
-        pessoa.setNomePai(pessoaRequest.nomePai());
+
         Pessoa pessoaSaved = pessoaRepository.save(pessoa);
         return PessoaResponse.fromEntity(pessoaSaved);
     }
@@ -76,4 +77,9 @@ public class PessoaService {
         pessoaRepository.delete(pessoa);
     }
 
+    public PessoaResponse getById(Integer id) {
+        Pessoa pessoa = pessoaRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não existe!"));
+        return PessoaResponse.fromEntity(pessoa);
+    }
 }

@@ -26,6 +26,16 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Integer id){
+        try{
+            PessoaResponse pessoaResponse = pessoaService.getById(id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(pessoaResponse);
+        }catch (UsernameNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
+        }
+    }
+
     @GetMapping("/lista")
     public ResponseEntity<List<PessoaResponse>> getAll(
             @RequestParam(defaultValue = "0") int page,

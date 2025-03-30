@@ -25,7 +25,7 @@ public class Endereco {
     @Column(name = "end_bairro", length = 100, nullable = false)
     private String bairro;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cid_id", nullable = false)
     private Cidade cidade;
 
@@ -36,6 +36,14 @@ public class Endereco {
     private Set<Unidade> unidades;
 
     public Endereco() {
+    }
+
+    public Endereco(String tipoLogradouro, String logradouro, Integer numero, String bairro, Cidade cidade) {
+        this.tipoLogradouro = tipoLogradouro;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
     }
 
     public Integer getId() {

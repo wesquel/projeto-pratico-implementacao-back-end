@@ -25,7 +25,7 @@ public class Pessoa {
     @Column(name = "pes_pai", length = 200)
     private String nomePai;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "pessoa_endereco",
         joinColumns = @JoinColumn(name = "pes_id"),
@@ -46,6 +46,16 @@ public class Pessoa {
     private Set<Lotacao> lotacoes;
 
     public Pessoa() {
+    }
+
+    public Pessoa(String nome, LocalDate dataNascimento, String sexo,
+                  String nomeMae, String nomePai, Set<Endereco> enderecos) {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.sexo = sexo;
+        this.nomeMae = nomeMae;
+        this.nomePai = nomePai;
+        this.enderecos = enderecos;
     }
 
     public Integer getId() {
