@@ -2,8 +2,12 @@ package br.com.addson.projetopraticoimplementacaobackend.dtos.cidade;
 
 import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 
-public record CidadeResponse(String nome, String cidade) {
+public record CidadeResponse(Integer id, String nome, String uf) {
     public static CidadeResponse fromEntity(Cidade cidade){
-        return new CidadeResponse(cidade.getNome(), cidade.getUf());
+        return new CidadeResponse(
+                cidade.getId(),
+                cidade.getNome(),
+                cidade.getUf()
+        );
     }
 }

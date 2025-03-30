@@ -1,12 +1,12 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.endereco;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeUpdateRequest;
-import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record EnderecoRequest(
+public record EnderecoUpdateRequest(
+        Integer id,
         @NotNull(message = "O tipo de logradouro é obrigatório.")
         @Size(min = 3, max = 50, message = "O tipo de logradouro deve ter entre 3 e 50 caracteres.")
         String tipoLogradouro,
@@ -21,17 +21,7 @@ public record EnderecoRequest(
         String bairro,
 
         @NotNull(message = "A cidade é obrigatória.")
-        @Valid
         CidadeUpdateRequest cidade
 ) {
-    public Endereco toEntity() {
-        return new Endereco(
-                this.tipoLogradouro,
-                this.logradouro,
-                this.numero,
-                this.bairro,
-                this.cidade.toEntity()
-        );
-    }
 }
 

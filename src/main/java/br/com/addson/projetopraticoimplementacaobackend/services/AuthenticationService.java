@@ -53,6 +53,6 @@ public class AuthenticationService {
         );
 
         return userRepository.findByUsername(input.username())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado faça login."));
     }
 }

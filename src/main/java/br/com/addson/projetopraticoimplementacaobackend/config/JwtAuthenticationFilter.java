@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.getWriter().write("Token invalido ou expirado.");
         } catch (UsernameNotFoundException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Usuário não encontrado.");
+            response.getWriter().write("Usuário não encontrado faça login.");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("Erro interno no servidor.");
