@@ -42,13 +42,11 @@ A API está hospedada localmente em http://localhost:8080. Para autenticação, 
 
 # Explicação dos Endpoints da API
 
-Este documento descreve os endpoints da API definidos no arquivo Postman fornecido. A API parece ser um backend para um sistema de gestão de servidores, com funcionalidades de autenticação e gerenciamento de diferentes entidades como servidores efetivos, servidores temporários, pessoas, endereços, cidades, unidades organizacionais e lotações.
-
 **Observações Gerais:**
 
-* **Base URL:** A maioria dos endpoints utiliza a seguinte URL base: `http://localhost:8080`.
+* **Base URL:** A os endpoints utiliza a seguinte URL base: `http://localhost:8080`.
 * **Autenticação:** A maioria dos endpoints, exceto os da seção "Auth", requer autenticação via token Bearer. O token é armazenado na variável de coleção `authToken` após um login bem-sucedido.
-* **Formato de Dados:** As requisições e respostas geralmente utilizam o formato JSON.
+* **Formato de Dados:** As requisições e respostas utilizam o formato JSON.
 
 ## 1. Auth
 
