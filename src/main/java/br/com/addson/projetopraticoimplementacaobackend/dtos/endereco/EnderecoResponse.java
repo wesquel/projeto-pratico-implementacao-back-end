@@ -4,7 +4,6 @@ import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeRespon
 import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

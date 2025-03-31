@@ -1,6 +1,5 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo;
 
-import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResumo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

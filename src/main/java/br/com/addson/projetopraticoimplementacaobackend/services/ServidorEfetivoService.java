@@ -7,7 +7,6 @@ import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.Se
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoUnidadeResponse;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
 import br.com.addson.projetopraticoimplementacaobackend.models.*;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.LotacaoRepository;
@@ -15,8 +14,6 @@ import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepos
 import br.com.addson.projetopraticoimplementacaobackend.repositories.ServidorEfetivoRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.UnidadeRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

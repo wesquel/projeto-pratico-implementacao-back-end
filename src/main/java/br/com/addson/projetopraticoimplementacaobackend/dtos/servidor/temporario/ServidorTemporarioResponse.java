@@ -3,10 +3,8 @@ package br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.temporari
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.ServidorTemporario;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public record ServidorTemporarioResponse(
         Integer id,

@@ -3,7 +3,6 @@ package br.com.addson.projetopraticoimplementacaobackend.services;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.enums.SexoEnum;
 import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
@@ -13,14 +12,11 @@ import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepos
 import br.com.addson.projetopraticoimplementacaobackend.repositories.ServidorEfetivoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -91,10 +87,6 @@ public class PessoaService {
         Set<Endereco> enderecosAtualizados = updateEnderecos(pessoa, pessoaUpdateRequest.enderecos());
         pessoa.getEnderecos().removeIf(endereco -> !enderecosAtualizados.contains(endereco));
         pessoa.getEnderecos().addAll(enderecosAtualizados);
-
-//        Set<ServidorEfetivo> servidorEfetivoSet = updateServidoresEfetivos(pessoa,
-//                pessoaUpdateRequest.servidoresEfetivos());
-//        pessoa.setServidoresEfetivos(servidorEfetivoSet);
 
         Pessoa pessoaSaved = pessoaRepository.save(pessoa);
         return PessoaResponse.fromEntity(pessoaSaved);

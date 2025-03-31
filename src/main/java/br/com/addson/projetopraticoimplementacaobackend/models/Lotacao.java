@@ -3,7 +3,6 @@ package br.com.addson.projetopraticoimplementacaobackend.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 public class Lotacao {

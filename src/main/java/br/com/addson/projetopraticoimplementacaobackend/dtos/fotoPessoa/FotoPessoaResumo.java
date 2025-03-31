@@ -1,6 +1,5 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa;
 
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.FotoPessoa;
 
 import java.time.LocalDate;

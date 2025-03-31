@@ -1,19 +1,14 @@
 package br.com.addson.projetopraticoimplementacaobackend.controllers;
 
-import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.cidade.CidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
-import br.com.addson.projetopraticoimplementacaobackend.models.Cidade;
 import br.com.addson.projetopraticoimplementacaobackend.services.CidadeService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 

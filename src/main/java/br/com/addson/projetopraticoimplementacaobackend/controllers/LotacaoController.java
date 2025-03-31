@@ -1,12 +1,9 @@
 package br.com.addson.projetopraticoimplementacaobackend.controllers;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.services.LotacaoService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;

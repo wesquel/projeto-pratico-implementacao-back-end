@@ -1,15 +1,12 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
-import br.com.addson.projetopraticoimplementacaobackend.models.ServidorEfetivo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 

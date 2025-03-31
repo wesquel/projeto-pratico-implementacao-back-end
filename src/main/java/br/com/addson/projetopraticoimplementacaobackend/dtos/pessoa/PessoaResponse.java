@@ -1,15 +1,11 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResumo;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResumo;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResumo;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.temporario.ServidorTemporarioResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.temporario.ServidorTemporarioResumo;
-import br.com.addson.projetopraticoimplementacaobackend.models.*;
+import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;

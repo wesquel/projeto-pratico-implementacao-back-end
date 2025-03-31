@@ -1,7 +1,6 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.ServidorEfetivo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;

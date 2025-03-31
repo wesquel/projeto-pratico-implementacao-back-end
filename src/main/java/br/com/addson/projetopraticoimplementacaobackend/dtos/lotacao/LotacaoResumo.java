@@ -1,6 +1,5 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao;
 
-import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.Lotacao;
 import com.fasterxml.jackson.annotation.JsonProperty;

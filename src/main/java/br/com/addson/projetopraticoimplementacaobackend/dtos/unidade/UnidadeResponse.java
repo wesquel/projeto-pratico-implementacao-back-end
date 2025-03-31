@@ -1,11 +1,7 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.unidade;
 
-import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.models.Unidade;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
