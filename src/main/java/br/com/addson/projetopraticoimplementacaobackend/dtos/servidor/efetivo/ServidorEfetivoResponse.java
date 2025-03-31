@@ -1,8 +1,13 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
+import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
 import br.com.addson.projetopraticoimplementacaobackend.models.ServidorEfetivo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public record ServidorEfetivoResponse(
@@ -17,5 +22,13 @@ public record ServidorEfetivoResponse(
                 servidorEfetivo.getMatricula(),
                 PessoaResponse.fromEntity(servidorEfetivo.getPessoa())
         );
+    }
+    public static Set<ServidorEfetivoResponse> fromSet(Set<ServidorEfetivo> servidorEfetivoSet){
+        if (servidorEfetivoSet == null || servidorEfetivoSet.isEmpty()) {
+            return Set.of();
+        }
+
+        return servidorEfetivoSet.stream().map(ServidorEfetivoResponse::fromEntity)
+                .collect(Collectors.toSet());
     }
 }

@@ -58,6 +58,18 @@ public class Pessoa {
         this.enderecos = enderecos;
     }
 
+    public Pessoa(String nome, LocalDate dataNascimento, String sexo,
+                  String nomeMae, String nomePai, Set<Endereco> enderecos,
+                  Set<ServidorEfetivo> servidoresEfetivos) {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.sexo = sexo;
+        this.nomeMae = nomeMae;
+        this.nomePai = nomePai;
+        this.enderecos = enderecos;
+        this.servidoresEfetivos = servidoresEfetivos;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -113,4 +125,13 @@ public class Pessoa {
     public void setEnderecos(Set<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
+
+    public Set<ServidorEfetivo> getServidoresEfetivos() {
+        return servidoresEfetivos;
+    }
+
+    public void setServidoresEfetivos(Set<ServidorEfetivo> servidoresEfetivos) {
+        this.servidoresEfetivos = servidoresEfetivos;
+    }
+
 }

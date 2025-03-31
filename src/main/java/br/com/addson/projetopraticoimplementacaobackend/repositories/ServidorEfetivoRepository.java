@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface ServidorEfetivoRepository extends JpaRepository<ServidorEfetivo, Integer> {
     boolean existsByMatricula(String matricula);
+    Optional<ServidorEfetivo> findByMatricula(String matricula);
 }

@@ -32,10 +32,10 @@ public class ServidorEfetivoController {
         return ResponseEntity.ok(servidores);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id) {
+    @GetMapping("/{matricula}")
+    public ResponseEntity<?> getByMatricula(@PathVariable String matricula) {
         try {
-            ServidorEfetivoResponse servidorResponse = servidorEfetivoService.getById(id);
+            ServidorEfetivoResponse servidorResponse = servidorEfetivoService.getByMatricula(matricula);
             return ResponseEntity.status(HttpStatus.OK).body(servidorResponse);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
