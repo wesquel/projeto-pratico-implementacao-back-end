@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @Service
 public class FotoPessoaService {
 
-    private final Path storageLocation = Paths.get("uploads");
     private final String bucketName = "foto-pessoal";
     private final FotoPessoaRepository fotoPessoaRepository;
     private final MinioClient minioClient;
@@ -59,18 +58,6 @@ public class FotoPessoaService {
         FotoPessoa fotoPessoa = fotoPessoaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Foto da pessoa não existe!"));
         return FotoPessoaResponse.fromEntity(fotoPessoa);
-    }
-
-    @Transactional
-    public FotoPessoaResponse register(FotoPessoaRequest fotoPessoaRequest) {
-        FotoPessoa fotoPessoa = fotoPessoaRequest.toEntity();
-        Pessoa pessoa = pessoaRepository.findById(fotoPessoaRequest.pessoaId()).orElseThrow(
-                () -> new EntityNotFoundException("ID pessoa não encontrada.")
-        );
-
-        fotoPessoa.setPessoa(pessoa);
-        FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
-        return FotoPessoaResponse.fromEntity(fotoPessoaSaved);
     }
 
     @Transactional
@@ -99,26 +86,6 @@ public class FotoPessoaService {
     }
 
     @Transactional
-    public FotoPessoaResponse upload(FotoPessoaRequest fotoPessoaRequest, MultipartFile file) throws IOException {
-        if (!Files.exists(storageLocation)) {
-            Files.createDirectories(storageLocation);
-        }
-
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        Path filePath = storageLocation.resolve(fileName);
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        FotoPessoa fotoPessoa = fotoPessoaRequest.toEntity();
-        Pessoa pessoa = pessoaRepository.findById(fotoPessoaRequest.pessoaId()).orElseThrow(
-                () -> new EntityNotFoundException("ID pessoa não encontrada.")
-        );
-
-        fotoPessoa.setPessoa(pessoa);
-        FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
-        return FotoPessoaResponse.fromEntity(fotoPessoaSaved);
-    }
-
-    @Transactional
     public FotoPessoaResponse uploadFoto(Integer pessoaId, MultipartFile file)
             throws IOException, ServerException, InsufficientDataException, ErrorResponseException,
             NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
@@ -144,11 +111,11 @@ public class FotoPessoaService {
                 .orElseThrow(() -> new EntityNotFoundException("ID pessoa não encontrada."));
 
         FotoPessoa fotoPessoa = new FotoPessoa();
-        fotoPessoa.setPessoa(pessoa);
         fotoPessoa.setBucket(bucketName);
         fotoPessoa.setHash(fileName);
         fotoPessoa.setData(LocalDate.now());
-
+        pessoa.getFotos().add(fotoPessoa);
+        fotoPessoa.setPessoa(pessoa);
         FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
 
         return FotoPessoaResponse.fromEntity(fotoPessoaSaved);

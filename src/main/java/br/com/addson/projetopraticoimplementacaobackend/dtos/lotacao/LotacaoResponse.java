@@ -12,18 +12,19 @@ public record LotacaoResponse(
         LocalDate dataLotacao,
         LocalDate dataRemocao,
         String portaria,
-        @JsonProperty("pessoa")
-        PessoaResponse pessoaResponse,
         @JsonProperty("unidade")
-        UnidadeResponse unidadeResponse
+        UnidadeResponse unidadeResponse,
+        @JsonProperty("pessoa")
+        PessoaResponse pessoaResponse
+
 ) {
     public static LotacaoResponse fromEntity(Lotacao lotacao){
         return new LotacaoResponse(lotacao.getId(),
                 lotacao.getDataLocacao(),
                 lotacao.getDataRemocao(),
                 lotacao.getPortaria(),
-                PessoaResponse.fromEntity(lotacao.getPessoa()),
-                UnidadeResponse.fromEntity(lotacao.getUnidade())
+                UnidadeResponse.fromEntity(lotacao.getUnidade()),
+                PessoaResponse.fromEntity(lotacao.getPessoa())
         );
     }
 }

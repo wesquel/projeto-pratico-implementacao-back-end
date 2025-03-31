@@ -72,14 +72,16 @@ public class LotacaoService {
 
         Unidade unidade = unidadeRepository.findById(lotacaoRequest.unidId()).orElseThrow(
                 () -> new EntityNotFoundException("Unidade ID não encontrado: " + lotacaoRequest.unidId()));
+
         Pessoa pessoa = pessoaRepository.findById(lotacaoRequest.pessoaId()).orElseThrow(
                 () -> new EntityNotFoundException("Pessoa ID não encontrado:" + lotacaoRequest.pessoaId()));
 
         lotacao.setDataLocacao(lotacaoRequest.dataLotacao());
         lotacao.setDataRemocao(lotacaoRequest.dataRemocao());
         lotacao.setPortaria(lotacaoRequest.portaria());
-        lotacao.setPessoa(pessoa);
         lotacao.setUnidade(unidade);
+        pessoa.getLotacoes().add(lotacao);
+        lotacao.setPessoa(pessoa);
 
 
         Lotacao lotacaoSaved = lotacaoRepository.save(lotacao);
