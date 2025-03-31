@@ -138,24 +138,11 @@ public class Pessoa {
         return servidoresTemporarios;
     }
 
-    public void setServidoresTemporarios(Set<ServidorTemporario> servidoresTemporarios) {
-        this.servidoresTemporarios = servidoresTemporarios;
-    }
-
     public Set<Lotacao> getLotacoes() {
         return lotacoes;
     }
-
-    public void setLotacoes(Set<Lotacao> lotacoes) {
-        this.lotacoes = lotacoes;
-    }
-
     public Set<FotoPessoa> getFotos() {
         return fotos;
-    }
-
-    public void setFotos(Set<FotoPessoa> fotos) {
-        this.fotos = fotos;
     }
 
     public Integer getIdade() {
