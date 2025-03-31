@@ -52,18 +52,18 @@ public class FotoPessoaController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFoto(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("pessoaId") Integer pessoaId) {
+    public ResponseEntity<?> uploadFotos(@RequestParam("files") List<MultipartFile> files,
+                                         @RequestParam("pessoaId") Integer pessoaId) {
         try {
-            FotoPessoaResponse response = fotoPessoaService.uploadFoto(pessoaId, file);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            List<FotoPessoaResponse> responses = fotoPessoaService.uploadFotos(pessoaId, files);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responses);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
         } catch (IOException | ServerException | InsufficientDataException | ErrorResponseException |
                  NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException | XmlParserException |
                  InternalException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseException("Erro ao fazer upload da foto: " + e.getMessage()));
+                    .body(new ResponseException("Erro ao fazer upload das fotos: " + e.getMessage()));
         }
     }
 

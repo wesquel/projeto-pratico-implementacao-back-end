@@ -29,6 +29,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -86,7 +87,7 @@ public class FotoPessoaService {
     }
 
     @Transactional
-    public FotoPessoaResponse uploadFoto(Integer pessoaId, MultipartFile file)
+    public List<FotoPessoaResponse> uploadFotos(Integer pessoaId, List<MultipartFile> files)
             throws IOException, ServerException, InsufficientDataException, ErrorResponseException,
             NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
@@ -94,31 +95,36 @@ public class FotoPessoaService {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }
 
-        String fileName = UUID.randomUUID().toString();
-        if (fileName.length() > 50) {
-            fileName = fileName.substring(0, 50);
-        }
-
-
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket(bucketName)
-                .object(fileName)
-                .stream(file.getInputStream(), file.getSize(), -1)
-                .contentType(file.getContentType())
-                .build());
-
         Pessoa pessoa = pessoaRepository.findById(pessoaId)
                 .orElseThrow(() -> new EntityNotFoundException("ID pessoa não encontrada."));
 
-        FotoPessoa fotoPessoa = new FotoPessoa();
-        fotoPessoa.setBucket(bucketName);
-        fotoPessoa.setHash(fileName);
-        fotoPessoa.setData(LocalDate.now());
-        pessoa.getFotos().add(fotoPessoa);
-        fotoPessoa.setPessoa(pessoa);
-        FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
+        List<FotoPessoaResponse> responses = new ArrayList<>();
 
-        return FotoPessoaResponse.fromEntity(fotoPessoaSaved);
+        for (MultipartFile file : files) {
+            String fileName = UUID.randomUUID().toString();
+            if (fileName.length() > 50) {
+                fileName = fileName.substring(0, 50);
+            }
+
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .stream(file.getInputStream(), file.getSize(), -1)
+                    .contentType(file.getContentType())
+                    .build());
+
+            FotoPessoa fotoPessoa = new FotoPessoa();
+            fotoPessoa.setBucket(bucketName);
+            fotoPessoa.setHash(fileName);
+            fotoPessoa.setData(LocalDate.now());
+            pessoa.getFotos().add(fotoPessoa);
+            fotoPessoa.setPessoa(pessoa);
+            FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
+
+            responses.add(FotoPessoaResponse.fromEntity(fotoPessoaSaved));
+        }
+
+        return responses;
     }
 
 }
