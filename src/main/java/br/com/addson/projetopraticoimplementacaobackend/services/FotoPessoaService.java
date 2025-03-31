@@ -2,29 +2,49 @@ package br.com.addson.projetopraticoimplementacaobackend.services;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaRequest;
 import br.com.addson.projetopraticoimplementacaobackend.models.FotoPessoa;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.FotoPessoaRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.minio.*;
+import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class FotoPessoaService {
 
+    private final Path storageLocation = Paths.get("uploads");
+    private final String bucketName = "foto-pessoal";
     private final FotoPessoaRepository fotoPessoaRepository;
-
+    private final MinioClient minioClient;
     private final PessoaRepository pessoaRepository;
 
-    public FotoPessoaService(FotoPessoaRepository fotoPessoaRepository, PessoaRepository pessoaRepository) {
+    public FotoPessoaService(FotoPessoaRepository fotoPessoaRepository, MinioClient minioClient, PessoaRepository pessoaRepository) {
         this.fotoPessoaRepository = fotoPessoaRepository;
+        this.minioClient = minioClient;
         this.pessoaRepository = pessoaRepository;
     }
 
@@ -66,8 +86,6 @@ public class FotoPessoaService {
                 () -> new EntityNotFoundException("ID pessoa não encontrada.")
         );
 
-        fotoPessoa.setData(fotoPessoaRequest.data());
-        fotoPessoa.setHash(fotoPessoaRequest.hash());
         fotoPessoa.setBucket(fotoPessoaRequest.bucket());
         fotoPessoa.setPessoa(pessoa);
         FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
@@ -79,4 +97,61 @@ public class FotoPessoaService {
                 .orElseThrow(() -> new EntityNotFoundException("Foto da pessoa não existe!"));
         fotoPessoaRepository.delete(fotoPessoa);
     }
+
+    @Transactional
+    public FotoPessoaResponse upload(FotoPessoaRequest fotoPessoaRequest, MultipartFile file) throws IOException {
+        if (!Files.exists(storageLocation)) {
+            Files.createDirectories(storageLocation);
+        }
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path filePath = storageLocation.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        FotoPessoa fotoPessoa = fotoPessoaRequest.toEntity();
+        Pessoa pessoa = pessoaRepository.findById(fotoPessoaRequest.pessoaId()).orElseThrow(
+                () -> new EntityNotFoundException("ID pessoa não encontrada.")
+        );
+
+        fotoPessoa.setPessoa(pessoa);
+        FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
+        return FotoPessoaResponse.fromEntity(fotoPessoaSaved);
+    }
+
+    @Transactional
+    public FotoPessoaResponse uploadFoto(Integer pessoaId, MultipartFile file)
+            throws IOException, ServerException, InsufficientDataException, ErrorResponseException,
+            NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+        }
+
+        String fileName = UUID.randomUUID().toString();
+        if (fileName.length() > 50) {
+            fileName = fileName.substring(0, 50);
+        }
+
+
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .stream(file.getInputStream(), file.getSize(), -1)
+                .contentType(file.getContentType())
+                .build());
+
+        Pessoa pessoa = pessoaRepository.findById(pessoaId)
+                .orElseThrow(() -> new EntityNotFoundException("ID pessoa não encontrada."));
+
+        FotoPessoa fotoPessoa = new FotoPessoa();
+        fotoPessoa.setPessoa(pessoa);
+        fotoPessoa.setBucket(bucketName);
+        fotoPessoa.setHash(fileName);
+        fotoPessoa.setData(LocalDate.now());
+
+        FotoPessoa fotoPessoaSaved = fotoPessoaRepository.save(fotoPessoa);
+
+        return FotoPessoaResponse.fromEntity(fotoPessoaSaved);
+    }
+
 }

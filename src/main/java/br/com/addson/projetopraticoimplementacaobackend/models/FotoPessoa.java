@@ -28,10 +28,8 @@ public class FotoPessoa {
     public FotoPessoa() {
     }
 
-    public FotoPessoa(LocalDate data, String bucket, String hash) {
-        this.data = data;
+    public FotoPessoa(String bucket) {
         this.bucket = bucket;
-        this.hash = hash;
     }
 
     public Integer getId() {
