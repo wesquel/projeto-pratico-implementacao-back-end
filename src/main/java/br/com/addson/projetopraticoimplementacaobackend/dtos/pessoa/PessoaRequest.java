@@ -27,20 +27,12 @@ public record PessoaRequest(
         String nomeMae,
         String nomePai,
         @NotNull(message = "A lista de endereços não pode ser nula.")
-        Set<EnderecoRequest> enderecos,
-
-        @NotNull(message = "A lista de servidores Efetivos não pode ser nula.")
-        Set<String> servidoresEfetivos,
-
-        @NotNull(message = "A lista de servidores Temporarios não pode ser nula.")
-        Set<Integer> servidoresTemporarios
+        Set<EnderecoRequest> enderecos
 ) {
         public Pessoa toEntity() {
                 Set<Endereco> enderecoEntities = enderecos.stream()
                         .map(EnderecoRequest::toEntity)
                         .collect(Collectors.toSet());
-
-                Set<ServidorEfetivo> servidorEfetivosEntities = new HashSet<>();;
 
                 return new Pessoa(
                         this.nome,
@@ -48,8 +40,7 @@ public record PessoaRequest(
                         this.sexo,
                         this.nomeMae,
                         this.nomePai,
-                        enderecoEntities,
-                        servidorEfetivosEntities
+                        enderecoEntities
                 );
         }
 }

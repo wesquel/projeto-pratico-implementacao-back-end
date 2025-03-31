@@ -56,6 +56,7 @@ public class ServidorEfetivoService{
         PessoaResponse pessoaResponse = pessoaService.register(servidorEfetivoRequest.pessoaRequest());
         Pessoa pessoa = pessoaRepository.findById(pessoaResponse.id())
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa não criada!"));
+        pessoa.getServidoresEfetivos().add(servidorEfetivo);
         servidorEfetivo.setPessoa(pessoa);
 
         ServidorEfetivo servidorEfetivoSaved = servidorEfetivoRepository.save(servidorEfetivo);
@@ -74,7 +75,8 @@ public class ServidorEfetivoService{
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Servidor Efetivo não encontrado para o ID: " + servidorEfetivoRequest.id()));
 
-        if (servidorEfetivoRepository.existsByMatricula(servidorEfetivoRequest.matricula())) {
+        if (!servidorEfetivoRequest.matricula().equals(servidorEfetivo.getMatricula())
+                && servidorEfetivoRepository.existsByMatricula(servidorEfetivoRequest.matricula())) {
             throw new IllegalArgumentException("Já existe um Servidor Efetivo com a matrícula: "
                     + servidorEfetivoRequest.matricula());
         }

@@ -51,18 +51,6 @@ public class FotoPessoaController {
         }
     }
 
-    @PostMapping("/cadastro")
-    public ResponseEntity<?> register(@Valid @RequestBody FotoPessoaRequest fotoPessoaRequest) {
-        try {
-            FotoPessoaResponse response = fotoPessoaService.register(fotoPessoaRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseException(e.getMessage()));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseException(e.getMessage()));
-        }
-    }
-
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFoto(@RequestParam("file") MultipartFile file,
                                         @RequestParam("pessoaId") Integer pessoaId) {

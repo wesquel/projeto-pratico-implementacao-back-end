@@ -72,9 +72,10 @@ public class ServidorTemporarioService {
         ServidorTemporario servidorTemporario = servidorTemporarioRepository.findById(servidorTemporarioRequest.id())
                 .orElseThrow(() -> new EntityNotFoundException("Servidor Temporário não encontrado para o ID: " + servidorTemporarioRequest.id()));
 
-        servidorTemporario.setPessoa(pessoa);
         servidorTemporario.setDataAdmissao(servidorTemporarioRequest.dataAdmissao());
         servidorTemporario.setDataDemissao(servidorTemporarioRequest.dataDemissao());
+        pessoa.getServidoresTemporarios().add(servidorTemporario);
+        servidorTemporario.setPessoa(pessoa);
 
         ServidorTemporario servidorTemporarioSaved = servidorTemporarioRepository.save(servidorTemporario);
         return ServidorTemporarioResponse.fromEntity(servidorTemporarioSaved);

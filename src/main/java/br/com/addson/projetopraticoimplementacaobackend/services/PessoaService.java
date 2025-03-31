@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,16 +69,7 @@ public class PessoaService {
         pessoa.setEnderecos(enderecosSalvos);
 
         Pessoa pessoaSaved = pessoaRepository.save(pessoa);
-
-        Set<ServidorEfetivo> servidorEfetivoSet = new HashSet<>();
-        for (String matricula : pessoaRequest.servidoresEfetivos()){
-            if (servidorEfetivoRepository.existsByMatricula(matricula)) {
-                throw new IllegalArgumentException("Matrícula já existente: " + matricula);
-            }
-            ServidorEfetivo servidorEfetivo = new ServidorEfetivo(matricula, pessoaSaved);
-            servidorEfetivoSet.add(servidorEfetivoRepository.save(servidorEfetivo));
-        }
-        pessoaSaved.setServidoresEfetivos(servidorEfetivoSet);
+        pessoaSaved.setServidoresEfetivos(new HashSet<>());
 
 
         return PessoaResponse.fromEntity(pessoaSaved);
@@ -100,9 +92,9 @@ public class PessoaService {
         pessoa.getEnderecos().removeIf(endereco -> !enderecosAtualizados.contains(endereco));
         pessoa.getEnderecos().addAll(enderecosAtualizados);
 
-        Set<ServidorEfetivo> servidorEfetivoSet = updateServidoresEfetivos(pessoa,
-                pessoaUpdateRequest.servidoresEfetivos());
-        pessoa.setServidoresEfetivos(servidorEfetivoSet);
+//        Set<ServidorEfetivo> servidorEfetivoSet = updateServidoresEfetivos(pessoa,
+//                pessoaUpdateRequest.servidoresEfetivos());
+//        pessoa.setServidoresEfetivos(servidorEfetivoSet);
 
         Pessoa pessoaSaved = pessoaRepository.save(pessoa);
         return PessoaResponse.fromEntity(pessoaSaved);
