@@ -149,4 +149,12 @@ public class Pessoa {
     public void setLotacoes(Set<Lotacao> lotacoes) {
         this.lotacoes = lotacoes;
     }
+
+    public Set<FotoPessoa> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(Set<FotoPessoa> fotos) {
+        this.fotos = fotos;
+    }
 }

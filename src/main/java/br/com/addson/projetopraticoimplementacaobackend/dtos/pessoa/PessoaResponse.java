@@ -1,6 +1,8 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResumo;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResumo;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
@@ -28,7 +30,9 @@ public record PessoaResponse(
         @JsonProperty("servidoresTemporarios")
         Set<ServidorTemporarioResumo> servidorTemporarios,
         @JsonProperty("lotacao")
-        Set<LotacaoResumo> lotacaoResponses
+        Set<LotacaoResumo> lotacaoResponses,
+        @JsonProperty("fotoPessoa")
+        Set<FotoPessoaResumo> fotoPessoaResumoSet
 
 ) {
     public static PessoaResponse fromEntity(Pessoa pessoa) {
@@ -49,7 +53,9 @@ public record PessoaResponse(
                                 .map(ServidorTemporarioResumo::fromEntity)
                                 .collect(Collectors.toSet()),
                 pessoa.getLotacoes() == null ? Set.of() :
-                        pessoa.getLotacoes().stream().map(LotacaoResumo::fromEntity).collect(Collectors.toSet())
+                        pessoa.getLotacoes().stream().map(LotacaoResumo::fromEntity).collect(Collectors.toSet()),
+                pessoa.getFotos() == null ? Set.of() :
+                        pessoa.getFotos().stream().map(FotoPessoaResumo::fromEntity).collect(Collectors.toSet())
         );
     }
 }
