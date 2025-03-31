@@ -1,14 +1,13 @@
 package br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.lotacao.LotacaoResumo;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResumo;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.temporario.ServidorTemporarioResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.temporario.ServidorTemporarioResumo;
-import br.com.addson.projetopraticoimplementacaobackend.models.Endereco;
-import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
-import br.com.addson.projetopraticoimplementacaobackend.models.ServidorEfetivo;
-import br.com.addson.projetopraticoimplementacaobackend.models.ServidorTemporario;
+import br.com.addson.projetopraticoimplementacaobackend.models.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
@@ -27,7 +26,9 @@ public record PessoaResponse(
         @JsonProperty("servidoresEfetivos")
         Set<ServidorEfetivoResumo> servidoresEfetivos,
         @JsonProperty("servidoresTemporarios")
-        Set<ServidorTemporarioResumo> servidorTemporarios
+        Set<ServidorTemporarioResumo> servidorTemporarios,
+        @JsonProperty("lotacao")
+        Set<LotacaoResumo> lotacaoResponses
 
 ) {
     public static PessoaResponse fromEntity(Pessoa pessoa) {
@@ -46,7 +47,9 @@ public record PessoaResponse(
                 pessoa.getServidoresTemporarios() == null ? Set.of() : // Adicionando a conversão para ServidorTemporarioResponse
                         pessoa.getServidoresTemporarios().stream()
                                 .map(ServidorTemporarioResumo::fromEntity)
-                                .collect(Collectors.toSet())
+                                .collect(Collectors.toSet()),
+                pessoa.getLotacoes() == null ? Set.of() :
+                        pessoa.getLotacoes().stream().map(LotacaoResumo::fromEntity).collect(Collectors.toSet())
         );
     }
 }

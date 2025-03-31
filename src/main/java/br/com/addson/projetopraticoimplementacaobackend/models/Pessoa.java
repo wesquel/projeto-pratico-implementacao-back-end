@@ -141,4 +141,12 @@ public class Pessoa {
     public void setServidoresTemporarios(Set<ServidorTemporario> servidoresTemporarios) {
         this.servidoresTemporarios = servidoresTemporarios;
     }
+
+    public Set<Lotacao> getLotacoes() {
+        return lotacoes;
+    }
+
+    public void setLotacoes(Set<Lotacao> lotacoes) {
+        this.lotacoes = lotacoes;
+    }
 }
