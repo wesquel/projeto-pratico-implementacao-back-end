@@ -134,4 +134,11 @@ public class Pessoa {
         this.servidoresEfetivos = servidoresEfetivos;
     }
 
+    public Set<ServidorTemporario> getServidoresTemporarios() {
+        return servidoresTemporarios;
+    }
+
+    public void setServidoresTemporarios(Set<ServidorTemporario> servidoresTemporarios) {
+        this.servidoresTemporarios = servidoresTemporarios;
+    }
 }

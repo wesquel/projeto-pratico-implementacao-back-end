@@ -30,7 +30,10 @@ public record PessoaRequest(
         Set<EnderecoRequest> enderecos,
 
         @NotNull(message = "A lista de servidores Efetivos não pode ser nula.")
-        Set<String> servidoresEfetivos
+        Set<String> servidoresEfetivos,
+
+        @NotNull(message = "A lista de servidores Temporarios não pode ser nula.")
+        Set<Integer> servidoresTemporarios
 ) {
         public Pessoa toEntity() {
                 Set<Endereco> enderecoEntities = enderecos.stream()

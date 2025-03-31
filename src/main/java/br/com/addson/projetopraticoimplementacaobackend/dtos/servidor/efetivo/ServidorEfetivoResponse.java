@@ -23,12 +23,4 @@ public record ServidorEfetivoResponse(
                 PessoaResponse.fromEntity(servidorEfetivo.getPessoa())
         );
     }
-    public static Set<ServidorEfetivoResponse> fromSet(Set<ServidorEfetivo> servidorEfetivoSet){
-        if (servidorEfetivoSet == null || servidorEfetivoSet.isEmpty()) {
-            return Set.of();
-        }
-
-        return servidorEfetivoSet.stream().map(ServidorEfetivoResponse::fromEntity)
-                .collect(Collectors.toSet());
-    }
 }

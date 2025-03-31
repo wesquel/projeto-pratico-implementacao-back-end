@@ -1,7 +1,9 @@
 package br.com.addson.projetopraticoimplementacaobackend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -19,14 +21,22 @@ public class ServidorTemporario {
     private Pessoa pessoa;
 
     @Column(name = "st_data_admissao")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    private Date dataAdmissao;
+    private LocalDate dataAdmissao;
 
     @Column(name = "st_data_demissao")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    private Date dataDemissao;
+    private LocalDate dataDemissao;
 
     public ServidorTemporario() {
+    }
+
+    public ServidorTemporario(LocalDate dataAdmissao, LocalDate dataDemissao, Pessoa pessoa) {
+        this.dataAdmissao = dataAdmissao;
+        this.dataDemissao = dataDemissao;
+        this.pessoa = pessoa;
     }
 
     public Integer getId() {
@@ -41,19 +51,19 @@ public class ServidorTemporario {
         this.pessoa = pessoa;
     }
 
-    public Date getDataAdmissao() {
+    public LocalDate getDataAdmissao() {
         return dataAdmissao;
     }
 
-    public void setDataAdmissao(Date dataAdmissao) {
+    public void setDataAdmissao(LocalDate dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
-    public Date getDataDemissao() {
+    public LocalDate getDataDemissao() {
         return dataDemissao;
     }
 
-    public void setDataDemissao(Date dataDemissao) {
+    public void setDataDemissao(LocalDate dataDemissao) {
         this.dataDemissao = dataDemissao;
     }
 }
