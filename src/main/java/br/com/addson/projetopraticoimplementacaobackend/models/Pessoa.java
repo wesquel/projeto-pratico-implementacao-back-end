@@ -3,6 +3,7 @@ package br.com.addson.projetopraticoimplementacaobackend.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.util.Set;
 
@@ -156,5 +157,15 @@ public class Pessoa {
 
     public void setFotos(Set<FotoPessoa> fotos) {
         this.fotos = fotos;
+    }
+
+    public Integer getIdade() {
+        if (dataNascimento == null) {
+            return null; // Ou lance uma exceção, dependendo da sua lógica
+        }
+
+        LocalDate hoje = LocalDate.now();
+        Period periodo = Period.between(dataNascimento, hoje);
+        return periodo.getYears();
     }
 }

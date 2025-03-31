@@ -1,15 +1,20 @@
 package br.com.addson.projetopraticoimplementacaobackend.services;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResumo;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoUnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
+import br.com.addson.projetopraticoimplementacaobackend.models.Lotacao;
 import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
 import br.com.addson.projetopraticoimplementacaobackend.models.ServidorEfetivo;
 import br.com.addson.projetopraticoimplementacaobackend.models.Unidade;
+import br.com.addson.projetopraticoimplementacaobackend.repositories.LotacaoRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.ServidorEfetivoRepository;
+import br.com.addson.projetopraticoimplementacaobackend.repositories.UnidadeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,11 +32,15 @@ public class ServidorEfetivoService{
     private final ServidorEfetivoRepository servidorEfetivoRepository;
     private final PessoaService pessoaService;
     private final PessoaRepository pessoaRepository;
+    private final LotacaoRepository lotacaoRepository;
+    private final UnidadeRepository unidadeRepository;
 
-    public ServidorEfetivoService(ServidorEfetivoRepository servidorEfetivoRepository, PessoaService pessoaService, PessoaRepository pessoaRepository) {
+    public ServidorEfetivoService(ServidorEfetivoRepository servidorEfetivoRepository, PessoaService pessoaService, PessoaRepository pessoaRepository, LotacaoRepository lotacaoRepository, UnidadeRepository unidadeRepository) {
         this.servidorEfetivoRepository = servidorEfetivoRepository;
         this.pessoaService = pessoaService;
         this.pessoaRepository = pessoaRepository;
+        this.lotacaoRepository = lotacaoRepository;
+        this.unidadeRepository = unidadeRepository;
     }
 
     public List<ServidorEfetivoResponse> findAll(Pageable pageable) {
@@ -91,5 +101,28 @@ public class ServidorEfetivoService{
         ServidorEfetivo servidorEfetivo = servidorEfetivoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Servidor Efetivo não existe!"));
         servidorEfetivoRepository.delete(servidorEfetivo);
+    }
+
+    public List<ServidorEfetivoUnidadeResponse> findServidoresByUnidade(Integer unid_id) {
+        Unidade unidade = unidadeRepository.findById(unid_id).orElseThrow(
+                () -> new EntityNotFoundException("ID de unidade não existe!")
+        );
+        List<Lotacao> lotacoes = lotacaoRepository.findByUnidade(unidade);
+
+        return lotacoes.stream()
+                .flatMap(lotacao -> {
+                    Set<ServidorEfetivo> servidores = lotacao.getPessoa().getServidoresEfetivos();
+                    return servidores.stream().map(servidor -> new ServidorEfetivoUnidadeResponse(
+                            servidor.getId(),
+                            servidor.getPessoa().getNome(),
+                            servidor.getPessoa().getIdade(),
+                            unidade.getNome(),
+                            servidor.getPessoa().getFotos().stream()
+                                    .map(FotoPessoaResumo::fromEntity)
+                                    .collect(Collectors.toSet())
+                    ));
+                })
+                .collect(Collectors.toList());
+
     }
 }

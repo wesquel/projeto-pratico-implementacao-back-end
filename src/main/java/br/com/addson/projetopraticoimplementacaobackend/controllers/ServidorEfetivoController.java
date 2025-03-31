@@ -3,6 +3,7 @@ package br.com.addson.projetopraticoimplementacaobackend.controllers;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoUnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.services.ServidorEfetivoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -73,5 +74,17 @@ public class ServidorEfetivoController {
         } catch (EntityNotFoundException ignored) {
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/unidade/{unid_id}")
+    public ResponseEntity<?> findUnidadeById(@PathVariable Integer unid_id){
+        try {
+            List<ServidorEfetivoUnidadeResponse> servidorEfetivoUnidadeResponses =
+                    servidorEfetivoService.findServidoresByUnidade(unid_id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(servidorEfetivoUnidadeResponses);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
+        }
+
     }
 }
