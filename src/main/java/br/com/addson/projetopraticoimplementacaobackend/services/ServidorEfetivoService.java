@@ -1,16 +1,15 @@
 package br.com.addson.projetopraticoimplementacaobackend.services;
 
+import br.com.addson.projetopraticoimplementacaobackend.dtos.endereco.EnderecoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.fotoPessoa.FotoPessoaResumo;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.pessoa.PessoaResponse;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoEnderecoFuncionalResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoUnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.unidade.UnidadeResponse;
 import br.com.addson.projetopraticoimplementacaobackend.exceptions.auth.UserAlreadyExistsException;
-import br.com.addson.projetopraticoimplementacaobackend.models.Lotacao;
-import br.com.addson.projetopraticoimplementacaobackend.models.Pessoa;
-import br.com.addson.projetopraticoimplementacaobackend.models.ServidorEfetivo;
-import br.com.addson.projetopraticoimplementacaobackend.models.Unidade;
+import br.com.addson.projetopraticoimplementacaobackend.models.*;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.LotacaoRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.PessoaRepository;
 import br.com.addson.projetopraticoimplementacaobackend.repositories.ServidorEfetivoRepository;
@@ -22,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -124,5 +124,25 @@ public class ServidorEfetivoService{
                 })
                 .collect(Collectors.toList());
 
+    }
+
+    public List<ServidorEfetivoEnderecoFuncionalResponse> buscarEnderecoPorNome(String parteNome) {
+        List<ServidorEfetivo> servidores = servidorEfetivoRepository.findByNomeContaining(parteNome);
+        List<ServidorEfetivoEnderecoFuncionalResponse> enderecos = new ArrayList<>();
+        for (ServidorEfetivo servidor : servidores) {
+            Set<Lotacao> lotacaoSet = servidor.getPessoa().getLotacoes();
+            for (Lotacao lotacao : lotacaoSet) {
+                Unidade unidade = lotacao.getUnidade();
+                Set<Endereco> enderecosUnidade = unidade.getEnderecos();
+                for (Endereco endereco : enderecosUnidade) {
+                    enderecos.add(new ServidorEfetivoEnderecoFuncionalResponse(
+                            servidor.getPessoa().getId(),
+                            servidor.getPessoa().getNome(),
+                            EnderecoResponse.fromEntity(endereco)
+                    ));
+                }
+            }
+        }
+        return enderecos;
     }
 }

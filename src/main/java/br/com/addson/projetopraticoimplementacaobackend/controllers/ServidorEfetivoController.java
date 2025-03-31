@@ -1,6 +1,7 @@
 package br.com.addson.projetopraticoimplementacaobackend.controllers;
 
 import br.com.addson.projetopraticoimplementacaobackend.dtos.exception.ResponseException;
+import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoEnderecoFuncionalResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoRequest;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoResponse;
 import br.com.addson.projetopraticoimplementacaobackend.dtos.servidor.efetivo.ServidorEfetivoUnidadeResponse;
@@ -85,6 +86,17 @@ public class ServidorEfetivoController {
         }catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseException(e.getMessage()));
         }
+    }
 
+    @GetMapping("/unidade/endereco")
+    public ResponseEntity<?> buscarEnderecoPorNome(
+            @RequestParam("nome") String parteNome) {
+        try {
+            List<ServidorEfetivoEnderecoFuncionalResponse> enderecos = servidorEfetivoService.buscarEnderecoPorNome(parteNome);
+            return ResponseEntity.status(HttpStatus.OK).body(enderecos);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseException(e.getMessage()));
+        }
     }
 }
