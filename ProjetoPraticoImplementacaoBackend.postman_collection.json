@@ -1,0 +1,1465 @@
+{
+	"info": {
+		"_postman_id": "b2b99535-8de5-4f3d-a9b5-3aa17923e0e1",
+		"name": "ProjetoPraticoImplementacaoBackend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26903058"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"123456\"\r\n \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"authToken\", response.token);\r",
+									"pm.collectionVariables.set(\"refreshToken\", response.refreshToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"authToken\", response.token);\r",
+									"pm.collectionVariables.set(\"refreshToken\", response.refreshToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServidorEfetivo",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByMatricula",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByUnidadeId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/unidade/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"unidade",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByNameEndereco",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/unidade/endereco?nome=teste",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"unidade",
+								"endereco"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "teste"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"matricula\": \"223912233112\",\r\n    \"pessoa\" : \r\n    {\r\n        \"nome\": \"Weslley Carvalho\",\r\n        \"dataNascimento\": \"1990-01-01\",\r\n        \"sexo\": \"masculino\",\r\n        \"nomeMae\": \"Mae\",\r\n        \"nomePai\": 1,\r\n        \"enderecos\": [\r\n            {\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Bairro\",\r\n                \"cidade\": {\r\n                    \"nome\": \"Cidade\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            },\r\n            {\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Bairro\",\r\n                \"cidade\": {\r\n                    \"nome\": \"Cidade1\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"matricula\": \"2239122331\",\r\n    \"pessoa\": {\r\n        \"id\": 1,\r\n        \"nome\": \"Weslley Carvalho\",\r\n        \"dataNascimento\": \"1990-01-01\",\r\n        \"sexo\": \"masculino\",\r\n        \"nomeMae\": \"Mae\",\r\n        \"nomePai\": \"1\",\r\n        \"enderecos\": [\r\n            {\r\n                \"id\": 1,\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Bairro\",\r\n                \"cidade\": {\r\n                    \"id\": 4,\r\n                    \"nome\": \"Cidade\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            },\r\n            {\r\n                \"id\": 2,\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Bairro\",\r\n                \"cidade\": {\r\n                    \"id\": 3,\r\n                    \"nome\": \"Cidade1\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/atualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/efetivo/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"efetivo",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Servidortemporario",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/temporario/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"temporario",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/temporario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"temporario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataAdmissao\": \"1999-01-01\",\r\n    \"pessoa\" : \r\n    {\r\n        \"nome\": \"Nome\",\r\n        \"dataNascimento\": \"1990-01-01\",\r\n        \"sexo\": \"masculino\",\r\n        \"nomeMae\": \"Mae\",\r\n        \"nomePai\": 1,\r\n        \"enderecos\": [\r\n            {\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Bairro\",\r\n                \"cidade\": {\r\n                    \"nome\": \"Cidade\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            },\r\n            {\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Bairro\",\r\n                \"cidade\": {\r\n                    \"nome\": \"Cidade1\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servidor/temporario/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"temporario",
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1, // ID SERVIDOR TEMPORARIO\r\n    \"dataAdmissao\": \"1998-01-01\",\r\n    \"dataDemissao\": null,\r\n    \"pessoa\": {\r\n        \"id\": 1, // ID PESSOA\r\n        \"nome\": \"Weslley Carvalho\",\r\n        \"dataNascimento\": \"1990-01-01\",\r\n        \"sexo\": \"masculino\",\r\n        \"nomeMae\": \"Mae\",\r\n        \"nomePai\": \"1\",\r\n        \"enderecos\": [\r\n            {\r\n                \"id\": 1, // ID ENDEREÇO\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Trés irmãs\",\r\n                \"cidade\": {\r\n                    \"id\": 3,\r\n                    \"nome\": \"Cidade\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            },\r\n            {\r\n                \"id\": 2, // ID ENDEREÇO\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Logradouro\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Trés irmãs\",\r\n                \"cidade\": {\r\n                    \"id\": 4,\r\n                    \"nome\": \"Cidade1\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servidor/temporario/atualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"temporario",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servidor/temporario/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servidor",
+								"temporario",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pessoa",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pessoa/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pessoa/18",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Weslley Carvalho\",\r\n    \"dataNascimento\": \"1990-01-01\",\r\n    \"sexo\": \"masculino\",\r\n    \"nomeMae\": \"mae\",\r\n    \"nomePai\": \"1\",\r\n    \"enderecos\": [\r\n        {\r\n            \"id\": 1,\r\n            \"tipoLogradouro\": \"Rua\",\r\n            \"logradouro\": \"Logradouro\",\r\n            \"numero\": 32,\r\n            \"bairro\": \"Bairro\",\r\n            \"cidade\": {\r\n                \"id\": 1,\r\n                \"nome\": \"Cidade\",\r\n                \"uf\": \"PB\"\r\n            }\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"tipoLogradouro\": \"Rua\",\r\n            \"logradouro\": \"Logradouro\",\r\n            \"numero\": 32,\r\n            \"bairro\": \"Bairro\",\r\n            \"cidade\": {\r\n                \"id\": 2,\r\n                \"nome\": \"Cidade1\",\r\n                \"uf\": \"PB\"\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pessoa/atualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pessoa/23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"23"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endereco",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/endereco/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"endereco",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/endereco/98",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"endereco",
+								"98"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cidade",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cidade/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cidade",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cidade/110",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cidade",
+								"110"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unidade",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/unidade/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"unidade",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/unidade/18",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"unidade",
+								"18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"nome\": \"Unidade 1\",\r\n        \"sigla\": \"FP\",\r\n        \"enderecos\": [\r\n            {\r\n                \"tipoLogradouro\": \"Rua\",\r\n                \"logradouro\": \"Rua Ferandp\",\r\n                \"numero\": 32,\r\n                \"bairro\": \"Trés irmãs\",\r\n                \"cidade\": {\r\n                    \"nome\": \"Campina Grande2\",\r\n                    \"uf\": \"PB\"\r\n                }\r\n            }\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/unidade/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"unidade",
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Weslley Carvalhooo\",\r\n    \"sigla\": \"FP\",\r\n    \"enderecos\": [\r\n        {\r\n            \"id\": 1,\r\n            \"tipoLogradouro\": \"Rua\",\r\n            \"logradouro\": \"Logradouro\",\r\n            \"numero\": 32,\r\n            \"bairro\": \"Bairro\",\r\n            \"cidade\": {\r\n                \"id\": 1,\r\n                \"nome\": \"Cidade\",\r\n                \"uf\": \"PB\"\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/unidade/atualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"unidade",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/unidade/17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"unidade",
+								"17"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lotacao",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/lotacao/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"lotacao",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/lotacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"lotacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dataAdmissao\": \"1999-01-01\",\r\n    \"unidId\": 1,\r\n    \"pessoaId\" : 1,\r\n    \"dataLotacao\": \"1999-01-01\",\r\n    \"portaria\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/lotacao/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"lotacao",
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"dataRemocao\": \"1998-01-01\",\r\n    \"pessoaId\" : 1,\r\n    \"unidId\": 1,\r\n    \"dataLotacao\": \"1998-01-01\",\r\n    \"portaria\": \"12312321\"   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/lotacao/atualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"lotacao",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/lotacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"lotacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FotoPessoa",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pessoa/foto/lista?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"foto",
+								"lista"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pessoa/foto/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"foto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadFiles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/C:/Users/wesqu/OneDrive/Imagens/Capturas de tela/Captura de tela 2025-03-31 144848.png",
+										"/C:/Users/wesqu/OneDrive/Imagens/Capturas de tela/Captura de tela 2023-12-07 091315.png"
+									]
+								},
+								{
+									"key": "pessoaId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/pessoa/foto/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"foto",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"data\": \"1999-01-01\",\r\n    \"bucket\" : \"123123123\",\r\n    \"hash\": \"123123123\",\r\n    \"pessoaId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pessoa/foto/atualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"foto",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pessoa/foto/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pessoa",
+								"foto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
